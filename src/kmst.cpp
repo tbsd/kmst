@@ -136,9 +136,20 @@ void Kmst::removeBigEdges(int startShift) {
         std::cerr << "Something gone wrong. No unused edges found" << std::endl;
         return;
       }
-      curSolution.addEdge(*minE);
-      if ((*matrix)[*maxE].weight <= (*matrix)[**minE].weight)
+      if ((*matrix)[*maxE].weight == (*matrix)[**minE].weight) {
+        (*matrix)[*maxE].isTried = true;
+        (*matrix)[**minE].isTried = true;
+        curSolution.addEdge(*minE);
+      } else if ((*matrix)[*maxE].weight < (*matrix)[**minE].weight) {
+        curSolution.addEdge(maxE);
         break;
+      } else {
+        curSolution.addEdge(*minE);
+        auto [edges_begin, edges_end] = boost::edges(*matrix);
+        for (auto i = edges_begin; i != edges_end; ++i) {
+          (*matrix)[*i].isTried = false;
+        }
+      }
     } else {
       break;
     }
@@ -160,11 +171,11 @@ int Kmst::getStartVertex() {
     case 128:
       return 42;
     case 512:
-      return 444;
+      return 0;
     case 2048:
-      return 444;
+      return 1080;
     case 4096:
-      return 69;
+      return 3015;
     default:
       return 0;
   }
@@ -218,6 +229,10 @@ void Kmst::clearMarks() {
   auto [vBegin, vEnd] = boost::vertices(*matrix);
   for (VertexIt i = vBegin; i != vEnd; ++i) {
     getV(*i).inCurrentSolution = false;
+  }
+  auto [edges_begin, edges_end] = boost::edges(*matrix);
+  for (auto i = edges_begin; i != edges_end; ++i) {
+    (*matrix)[*i].isTried = false;
   }
 }
 

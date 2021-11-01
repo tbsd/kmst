@@ -55,8 +55,9 @@ class Solution {
   }
 
   bool isAddable(const EdgeIt& e) {
-    return !getV(e->m_source).inCurrentSolution ||
-           !getV(e->m_target).inCurrentSolution;
+    return (!getV(e->m_source).inCurrentSolution ||
+            !getV(e->m_target).inCurrentSolution) &&
+           !(*matrix)[*e].isTried;
   }
 
   // Число рёбер в решении

@@ -18,7 +18,7 @@ void solve(const std::filesystem::path& inFile,
   graph::io::write(task, outFile);
 }
 
-// Чтобы скомпилить, нужно положить библиотеку boost в ./lib/boost/
+// Чтобы скомпилить, нужно положить библиотеку boost в ../lib/boost/
 // python3 imgs.py рисует картинки по файам задач/решений
 // Так было выяснено, что распределение вершин совсем не равномерное
 int main() {
